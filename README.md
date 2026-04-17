@@ -1,37 +1,54 @@
 # AI Agent Production-Ready Deployment
-**Sinh viên thực hiện:** Đỗ Trọng Minh
+**Sinh viên thực hiện:** Bùi Đức Tiến
 
 ---
 
 ## 🚀 Giới thiệu dự án
-Đây là dự án hoàn thiện cho **Day 12: Hạ tầng Cloud và Deployment**. Ứng dụng là một AI Agent được xây dựng bằng FastAPI, tối ưu hóa bằng Docker Multi-stage và đã được triển khai thành công trên Cloud.
+Đây là dự án hoàn thiện cho **Day 12: Hạ tầng Cloud và Deployment**. Ứng dụng là một AI Agent được xây dựng bằng FastAPI, tối ưu hóa bằng Docker Multi-stage và đã được triển khai thành công trên Render.com với OpenAI API (gpt-4o-mini).
 
 ### 🔗 Liên kết nhanh (Quick Links)
 - **Báo cáo Lab (Answers Pt 1-5):** [MISSION_ANSWERS.md](./MISSION_ANSWERS.md)
 - **Thông tin Deployment (Cloud URL & Test):** [DEPLOYMENT.md](./DEPLOYMENT.md)
-- **Hệ thống đang chạy (Health Check):** [https://day12-ha-tang-cloud-va-deployment.onrender.com/health](https://day12-ha-tang-cloud-va-deployment.onrender.com/health)
+- **Hệ thống đang chạy (Health Check):** [https://buiductien-ai-agent.onrender.com/health](https://buiductien-ai-agent.onrender.com/health)
+- **GitHub Repo:** [https://github.com/Tiensohot/2A202600003-BuiDucTien-Day12](https://github.com/Tiensohot/2A202600003-BuiDucTien-Day12)
 
 ### 🧪 Hướng dẫn Test nhanh (Fast Test)
 Dùng lệnh cURL sau để hỏi AI ngay lập tức qua Cloud:
 ```bash
-curl -X POST https://day12-ha-tang-cloud-va-deployment.onrender.com/ask \
-  -H "X-API-Key: 66d2fdf910617b84f915801ee6d2472f" \
+curl -X POST https://buiductien-ai-agent.onrender.com/ask \
+  -H "X-API-Key: bdt-agent-key-2026-secure" \
   -H "Content-Type: application/json" \
   -d '{"question": "Hello Agent!"}'
 ```
-*(Key mặc định: `66d2fdf910617b84f915801ee6d2472f`)*
+*(API Key: `bdt-agent-key-2026-secure`)*
 
 ---
 
 ## 🛠️ Công nghệ sử dụng
 - **Backend:** FastAPI (Python 3.11)
-- **Database:** Redis (Session management & Rate limiting)
-- **Containerization:** Docker & Docker Compose
-- **Platform:** Render.com (Cloud Deployment)
+- **LLM:** OpenAI API (`gpt-4o-mini`)
+- **Containerization:** Docker Multi-stage Build
+- **Platform:** Render.com (Singapore region, Free tier)
+- **CI/CD:** GitHub → Render auto-deploy on push
 
 ---
 
-## 📂 Phân tích cấu trúc dự án
+## 📂 Cấu Trúc Dự Án
+
+```
+06-lab-complete/
+├── app/
+│   ├── main.py         # Entry point — FastAPI app + OpenAI integration
+│   └── config.py       # 12-factor config từ environment variables
+├── utils/
+│   └── mock_llm.py     # Fallback khi không có OpenAI key
+├── Dockerfile          # Multi-stage, non-root user, < 500 MB
+├── docker-compose.yml  # Full stack local
+├── render.yaml         # Render deployment config
+└── requirements.txt
+```
+
+---
 
 ## Checklist Deliverable
 
@@ -40,34 +57,14 @@ curl -X POST https://day12-ha-tang-cloud-va-deployment.onrender.com/ask \
 - [x] .dockerignore
 - [x] Health check endpoint (`GET /health`)
 - [x] Readiness endpoint (`GET /ready`)
-- [x] API Key authentication
-- [x] Rate limiting
-- [x] Cost guard
-- [x] Config từ environment variables
-- [x] Structured logging
-- [x] Graceful shutdown
-- [x] Public URL ready (Railway / Render config)
-
----
-
-## Cấu Trúc
-
-```
-06-lab-complete/
-├── app/
-│   ├── main.py         # Entry point — kết hợp tất cả
-│   ├── config.py       # 12-factor config
-│   ├── auth.py         # API Key + JWT
-│   ├── rate_limiter.py # Rate limiting
-│   └── cost_guard.py   # Budget protection
-├── Dockerfile          # Multi-stage, production-ready
-├── docker-compose.yml  # Full stack
-├── railway.toml        # Deploy Railway
-├── render.yaml         # Deploy Render
-├── .env.example        # Template
-├── .dockerignore
-└── requirements.txt
-```
+- [x] API Key authentication (`X-API-Key` header)
+- [x] Rate limiting (20 req/min)
+- [x] Cost guard ($5/day budget)
+- [x] Config từ environment variables (12-factor)
+- [x] Structured JSON logging
+- [x] Graceful shutdown (SIGTERM)
+- [x] OpenAI API integration (gpt-4o-mini)
+- [x] Public URL deployed trên Render.com
 
 ---
 
@@ -76,49 +73,34 @@ curl -X POST https://day12-ha-tang-cloud-va-deployment.onrender.com/ask \
 ```bash
 # 1. Setup
 cp .env.example .env
+# Thêm OPENAI_API_KEY vào .env
 
 # 2. Chạy với Docker Compose
 docker compose up
 
 # 3. Test
-curl http://localhost/health
+curl http://localhost:8000/health
 
-# 4. Lấy API key từ .env, test endpoint
-API_KEY=$(grep AGENT_API_KEY .env | cut -d= -f2)
-curl -H "X-API-Key: $API_KEY" \
-     -X POST http://localhost/ask \
+# 4. Test endpoint với API key
+curl -H "X-API-Key: dev-key-change-me" \
+     -X POST http://localhost:8000/ask \
      -H "Content-Type: application/json" \
      -d '{"question": "What is deployment?"}'
 ```
 
 ---
 
-## Deploy Railway (< 5 phút)
+## Deploy lên Render
 
 ```bash
-# Cài Railway CLI
-npm i -g @railway/cli
+# 1. Push code lên GitHub
+git push origin main
 
-# Login và deploy
-railway login
-railway init
-railway variables set OPENAI_API_KEY=sk-...
-railway variables set AGENT_API_KEY=your-secret-key
-railway up
-
-# Nhận public URL!
-railway domain
+# Render tự động đọc render.yaml và deploy
+# Hoặc dùng Render API:
+curl -X POST https://api.render.com/v1/services/<service-id>/deploys \
+  -H "Authorization: Bearer <render-api-key>"
 ```
-
----
-
-## Deploy Render
-
-1. Push repo lên GitHub
-2. Render Dashboard → New → Blueprint
-3. Connect repo → Render đọc `render.yaml`
-4. Set secrets: `OPENAI_API_KEY`, `AGENT_API_KEY`
-5. Deploy → Nhận URL!
 
 ---
 
@@ -128,4 +110,4 @@ railway domain
 python check_production_ready.py
 ```
 
-Script này kiểm tra tất cả items trong checklist và báo cáo những gì còn thiếu.
+Script này kiểm tra tất cả items trong checklist. Kết quả: **20/20 passed**.
