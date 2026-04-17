@@ -1,0 +1,11 @@
+INFO:     Started server process [19344]
+INFO:     Waiting for application startup.
+2026-04-17 17:31:54,266 INFO Agent starting up...
+2026-04-17 17:31:54,266 INFO Loading model and checking dependencies...
+2026-04-17 17:31:54,467 INFO ✅ Agent is ready!
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8005 (Press CTRL+C to quit)
+INFO:     127.0.0.1:61538 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61540 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61542 - "GET /ready HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61544 - "POST /ask?question=Hello+Agent HTTP/1.1" 200 OK

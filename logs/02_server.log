@@ -1,0 +1,12 @@
+INFO:     Started server process [38592]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54255 - "GET / HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54257 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54259 - "POST /ask HTTP/1.1" 422 Unprocessable Entity
+INFO:     Started server process [29580]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8002 (Press CTRL+C to quit)
+INFO:     127.0.0.1:54263 - "POST /ask?question=What+is+Docker HTTP/1.1" 200 OK

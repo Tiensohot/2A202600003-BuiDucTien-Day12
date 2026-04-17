@@ -1,0 +1,10 @@
+INFO:     Started server process [15732]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     127.0.0.1:58117 - "GET / HTTP/1.1" 200 OK
+[DEBUG] Got question: Hello Agent
+[DEBUG] Using key: sk-hardcoded-fake-key-never-do-this
+[DEBUG] Response: Đây là câu trả lời từ AI agent (mock). Trong production, đây sẽ là response từ OpenAI/Anthropic.
+INFO:     127.0.0.1:58119 - "POST /ask?question=Hello+Agent HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58121 - "GET /health HTTP/1.1" 404 Not Found
