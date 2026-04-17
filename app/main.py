@@ -31,8 +31,20 @@ import uvicorn
 
 from app.config import settings
 
-# Mock LLM (thay bằng OpenAI/Anthropic khi có API key)
-from utils.mock_llm import ask as llm_ask
+from utils.mock_llm import ask as mock_ask
+from openai import OpenAI
+
+_openai_client = OpenAI(api_key=settings.openai_api_key) if settings.openai_api_key else None
+
+def llm_ask(question: str) -> str:
+    if _openai_client:
+        response = _openai_client.chat.completions.create(
+            model=settings.llm_model,
+            messages=[{"role": "user", "content": question}],
+            max_tokens=512,
+        )
+        return response.choices[0].message.content
+    return mock_ask(question)
 
 # ─────────────────────────────────────────────────────────
 # Logging — JSON structured
