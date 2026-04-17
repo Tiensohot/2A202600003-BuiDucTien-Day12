@@ -1,6 +1,37 @@
-# Lab 12 — Complete Production Agent
+# AI Agent Production-Ready Deployment
+**Sinh viên thực hiện:** Đỗ Trọng Minh
 
-Kết hợp TẤT CẢ những gì đã học trong 1 project hoàn chỉnh.
+---
+
+## 🚀 Giới thiệu dự án
+Đây là dự án hoàn thiện cho **Day 12: Hạ tầng Cloud và Deployment**. Ứng dụng là một AI Agent được xây dựng bằng FastAPI, tối ưu hóa bằng Docker Multi-stage và đã được triển khai thành công trên Cloud.
+
+### 🔗 Liên kết nhanh (Quick Links)
+- **Báo cáo Lab (Answers Pt 1-5):** [MISSION_ANSWERS.md](./MISSION_ANSWERS.md)
+- **Thông tin Deployment (Cloud URL & Test):** [DEPLOYMENT.md](./DEPLOYMENT.md)
+- **Hệ thống đang chạy (Health Check):** [https://day12-ha-tang-cloud-va-deployment.onrender.com/health](https://day12-ha-tang-cloud-va-deployment.onrender.com/health)
+
+### 🧪 Hướng dẫn Test nhanh (Fast Test)
+Dùng lệnh cURL sau để hỏi AI ngay lập tức qua Cloud:
+```bash
+curl -X POST https://day12-ha-tang-cloud-va-deployment.onrender.com/ask \
+  -H "X-API-Key: 66d2fdf910617b84f915801ee6d2472f" \
+  -H "Content-Type: application/json" \
+  -d '{"question": "Hello Agent!"}'
+```
+*(Key mặc định: `66d2fdf910617b84f915801ee6d2472f`)*
+
+---
+
+## 🛠️ Công nghệ sử dụng
+- **Backend:** FastAPI (Python 3.11)
+- **Database:** Redis (Session management & Rate limiting)
+- **Containerization:** Docker & Docker Compose
+- **Platform:** Render.com (Cloud Deployment)
+
+---
+
+## 📂 Phân tích cấu trúc dự án
 
 ## Checklist Deliverable
 
